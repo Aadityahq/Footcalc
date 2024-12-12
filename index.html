@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaVeda - Water Conservation</title>
+
+    <!-- Link to Leaflet for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0077b6;
+        }
+
+        section {
+            padding: 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form input, form textarea {
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #005f8c;
+        }
+
+        #map-container {
+            height: 400px;
+            width: 100%;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+
+        #water-footprint {
+            background: #e7f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        #water-footprint button {
+            width: auto;
+            background-color: #0077b6;
+        }
+
+        #result {
+            text-align: center;
+            font-weight: bold;
+            color: #0077b6;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="water-footprint">
+        <h2>Water Footprint Calculator</h2>
+        <form id="footprint-form">
+            <label for="showers">Showers per week:</label>
+            <input type="number" id="showers" min="0" placeholder="e.g., 7" required />
+
+            <label for="dishwashing">Dishwashing sessions per week:</label>
+            <input type="number" id="dishwashing" min="0" placeholder="e.g., 10" required />
+
+            <label for="laundry">Laundry loads per week:</label>
+            <input type="number" id="laundry" min="0" placeholder="e.g., 3" required />
+
+            <button type="button" onclick="calculateFootprint()">Calculate</button>
+        </form>
+        <p id="result"></p>
+    </section>
+
+    <section id="water-dashboard">
+        <h2>Real-Time Water Scarcity Dashboard</h2>
+        <div id="map-container"></div>
+    </section>
+
+    <section id="report-issue">
+        <h2>Report a Water Issue</h2>
+        <form>
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Enter location" required />
+
+            <label for="issue">Describe the Issue:</label>
+            <textarea id="issue" rows="4" placeholder="E.g., Leak in water pipe" required></textarea>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </section>
+
+    <script>
+        // Water Footprint Calculator
+        function calculateFootprint() {
+            const showers = parseInt(document.getElementById("showers").value) || 0;
+            const dishwashing = parseInt(document.getElementById("dishwashing").value) || 0;
+            const laundry = parseInt(document.getElementById("laundry").value) || 0;
+
+            const totalWater = showers * 70 + dishwashing * 15 + laundry * 50;
+
+            document.getElementById("result").innerText = `Your weekly water footprint is approximately ${totalWater} liters.`;
+        }
+
+        // Real-Time Water Scarcity Dashboard (Leaflet Map)
+        document.addEventListener("DOMContentLoaded", () => {
+            const map = L.map("map-container").setView([20.5937, 78.9629], 5); // Centered on India
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }).addTo(map);
+
+            // Sample marker for a water-scarce region
+            L.marker([13.0827, 80.2707])
+                .addTo(map)
+                .bindPopup("Chennai: Water scarcity reported.")
+                .openPopup();
+        });
+
+        // Water Issue Report (Form Submission Placeholder)
+        document.querySelector("#report-issue form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            alert("Thank you for reporting! We'll look into it.");
+        });
+    </script>
+</body>
+</html>
